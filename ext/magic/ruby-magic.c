@@ -378,10 +378,16 @@ rb_mgc_get_paths(VALUE object)
 
 	value = rb_funcall(rb_cMagic, rb_intern("default_paths"), 0);
 	if (getenv("MAGIC") || NIL_P(value)) {
+		printf("Ruby magic paths got from default_paths is nil.\n");
+		printf("Getting default_paths from magic_getpath_wrapper().\n");
 		cstring = magic_getpath_wrapper();
 		value = magic_split(CSTR2RVAL(cstring), CSTR2RVAL(":"));
 		RB_GC_GUARD(value);
 	}
+
+	printf("Ruby magic paths is not nil.\n");
+	printf("Ruby magic paths size: %d\n", RARRAY_LEN(value));
+	rb_p(value);
 
 	return magic_set_paths(object, value);
 }
